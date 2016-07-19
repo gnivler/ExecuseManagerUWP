@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
+
+using System.IO;
 using Windows.Storage;
-using Windows.Storage.Streams;
-
-using System.Runtime.Serialization;
 using Windows.Storage.Pickers;
+using Windows.Storage.Streams;
 using Windows.UI.Popups;
+using System.Runtime.Serialization;
 using Windows.Storage.FileProperties;
-
 
 namespace ExecuseManagerUWP
 {
@@ -114,6 +114,13 @@ namespace ExecuseManagerUWP
         public async Task ReadExcuseAsync()
         {
             // you'll write this method
+            using (IRandomAccessStream stream = await excuseFile.OpenAsync(FileAccessMode.Read))
+            {
+                using (Stream inputStream = stream.AsStreamForRead())
+                {
+                    CurrentExcuse = serializer.ReadObject(inputStream) as Excuse; 
+                }
+            }
         }
 
         public async Task WriteExcuseAsync()
@@ -121,8 +128,15 @@ namespace ExecuseManagerUWP
             // you'll write this method
             using (IRandomAccessStream stream = await excuseFile.OpenAsync(FileAccessMode.ReadWrite))
             {
-
+                using (Stream outputStream = stream.AsStreamForWrite())
+                {
+                    serializer.WriteObject(outputStream, excuseFile);
+                }
             }
+            MessageDialog dialog = new MessageDialog("Excuse file written successfully");
+            //dialog.Commands.Add(new UI.Command("OK"));
+            await dialog.ShowAsync();
+            await UpdateFileDateAsync();
         }
 
         public async Task SaveCurrentExcuseAsAsync()
