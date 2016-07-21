@@ -1,4 +1,4 @@
-﻿using ExecuseManagerUWP.Common;
+﻿using ExcuseManagerUWP.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,7 +16,7 @@ using Windows.UI.Xaml.Navigation;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 
-namespace ExecuseManagerUWP
+namespace ExcuseManagerUWP
 {
     /// <summary>
     /// A basic page that provides characteristics common to most applications.
@@ -131,6 +131,11 @@ namespace ExecuseManagerUWP
                 saveButton.IsEnabled = true;
                 randomButton.IsEnabled = true;
             }
+        }
+
+        private async void SaveAsClick(object sender, RoutedEventArgs e)
+        {
+            await excuseManager.SaveCurrentExcuseAsAsync();
         }
     }
 }

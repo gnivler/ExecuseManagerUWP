@@ -13,7 +13,7 @@ using Windows.UI.Popups;
 using System.Runtime.Serialization;
 using Windows.Storage.FileProperties;
 
-namespace ExecuseManagerUWP
+namespace ExcuseManagerUWP
 {
     class ExcuseManager : INotifyPropertyChanged
     {
@@ -57,7 +57,7 @@ namespace ExecuseManagerUWP
 
         public async void OpenExcuseAsync()
         {
-            FileOpenPicker picker = new FileOpenPicker { SuggestedStartLocation = PickerLocationId.DocumentsLibrary, CommitButtonText = "Open Excuse File" };
+            FileOpenPicker picker = new FileOpenPicker { CommitButtonText = "Open Excuse File" };
             picker.FileTypeFilter.Add(".xml");
             excuseFile = await picker.PickSingleFileAsync();
             if (excuseFile != null)
@@ -96,7 +96,7 @@ namespace ExecuseManagerUWP
             }
                 if (string.IsNullOrEmpty(CurrentExcuse.Description))
                 {
-                    await new MessageDialog("Curent Excuse does not have a description").ShowAsync();
+                    await new MessageDialog("Curent excuse does not have a description").ShowAsync();
                     return;
                 }
             if (excuseFile == null)
@@ -106,9 +106,9 @@ namespace ExecuseManagerUWP
             await WriteExcuseAsync();
         }
 
-        private void OnPropertyChanged(string v)
+        private void OnPropertyChanged(string propertyName)
         {
-            throw new NotImplementedException();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public async Task ReadExcuseAsync()
@@ -121,6 +121,7 @@ namespace ExecuseManagerUWP
                     CurrentExcuse = serializer.ReadObject(inputStream) as Excuse; 
                 }
             }
+            OnPropertyChanged("CurrentExcuse");
         }
 
         public async Task WriteExcuseAsync()
@@ -130,18 +131,25 @@ namespace ExecuseManagerUWP
             {
                 using (Stream outputStream = stream.AsStreamForWrite())
                 {
-                    serializer.WriteObject(outputStream, excuseFile);
+                    serializer.WriteObject(outputStream, CurrentExcuse);
                 }
             }
-            MessageDialog dialog = new MessageDialog("Excuse file written successfully");
-            //dialog.Commands.Add(new UI.Command("OK"));
-            await dialog.ShowAsync();
+            await new MessageDialog($"Excuse file written successfully to {excuseFile.Name}").ShowAsync();
             await UpdateFileDateAsync();
+            OnPropertyChanged("CurrentExcuse");
         }
 
         public async Task SaveCurrentExcuseAsAsync()
         {
             // you'll write this method
+            FileSavePicker picker = new FileSavePicker { DefaultFileExtension = ".xml" };
+            picker.FileTypeChoices.Add("XML File", new List<string>() { ".xml" });
+            IStorageFile saveFile = await picker.PickSaveFileAsync();
+            if (saveFile != null)
+            {
+                excuseFile = saveFile;
+                await WriteExcuseAsync();
+            }
         }
     }
 }

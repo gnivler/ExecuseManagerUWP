@@ -7,7 +7,7 @@ using System.ComponentModel;
 using System.Runtime.Serialization;
 using Windows.Storage;
 
-namespace ExecuseManagerUWP
+namespace ExcuseManagerUWP
 {
     [DataContract]
     class Excuse : INotifyPropertyChanged
@@ -23,6 +23,9 @@ namespace ExecuseManagerUWP
         [DataMember]
         public DateTimeOffset LastUsedDate { get; set; }
 
-        
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

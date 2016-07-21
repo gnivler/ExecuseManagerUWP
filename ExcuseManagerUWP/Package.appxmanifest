@@ -6,7 +6,7 @@
             Version="1.0.0.0" />
 
   <Properties>
-    <DisplayName>ExecuseManagerUWP</DisplayName>
+    <DisplayName>ExcuseManagerUWP</DisplayName>
     <PublisherDisplayName>mlivingston</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -23,12 +23,12 @@
   <Applications>
     <Application Id="App"
         Executable="$targetnametoken$.exe"
-        EntryPoint="ExecuseManagerUWP.App">
+        EntryPoint="ExcuseManagerUWP.App">
         <m2:VisualElements
-            DisplayName="ExecuseManagerUWP"
+            DisplayName="ExcuseManagerUWP"
             Square150x150Logo="Assets\Logo.png"
             Square30x30Logo="Assets\SmallLogo.png"
-            Description="ExecuseManagerUWP"
+            Description="ExcuseManagerUWP"
             ForegroundText="light"
             BackgroundColor="#464646">
             <m2:SplashScreen Image="Assets\SplashScreen.png" />

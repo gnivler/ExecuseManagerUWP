@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace ExecuseManagerUWP.Common
+namespace ExcuseManagerUWP.Common
 {
     /// <summary>
     /// A command whose sole purpose is to relay its functionality 
